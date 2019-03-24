@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	</head>
+	<body>
+		
+		<img id="ending" src="ending.png">
+
+		<img id="energy" src="energy-icon.png">
+
+		<img id="mango" src="mango.svg">
+
+		<img id="sun" src="sun.svg">
+		
+		<img id="oxygen-molecule0" src="oxygen-molecule.png">
+		<img id="oxygen-molecule1" src="oxygen-molecule.png">
+		<img id="oxygen-molecule2" src="oxygen-molecule.png">
+		<img id="oxygen-molecule3" src="oxygen-molecule.png">
+		<img id="oxygen-molecule4" src="oxygen-molecule.png">
+		<img id="oxygen-molecule5" src="oxygen-molecule.png">		
+		
+		<img id="squirrel" src="squirrel.svg">
+
+		<img id="glucose" src="glucose.png">
+						
+		<img id="water-molecule1" src="water-molecule.svg">
+		<img id="water-molecule2" src="water-molecule.svg">
+		<img id="water-molecule3" src="water-molecule.svg">
+		<img id="water-molecule4" src="water-molecule.svg">
+		<img id="water-molecule5" src="water-molecule.svg">
+		<img id="water-molecule6" src="water-molecule.svg">
+		
+		<img id="CO2-molecule0" src="CO2.jpg">
+		<img id="CO2-molecule1" src="CO2.jpg">
+		<img id="CO2-molecule2" src="CO2.jpg">
+		<img id="CO2-molecule3" src="CO2.jpg">
+		<img id="CO2-molecule4" src="CO2.jpg">
+		<img id="CO2-molecule5" src="CO2.jpg">
+		
+		<img id="waterglass" src="waterglass.svg">
+		
+		<img id="plant" src="plant.svg">
+		
+		
+    <style>
+		#glucose {
+			/*Previouslly width 100vw height 100vh*/
+			max-width:80vw;
+			height:60vh;
+			margin-left:25vw;
+			margin-top:20vh;
+			position: absolute;
+		}
+		#mango {
+			width:20vw;
+			height:26vh;
+			position: absolute;
+			margin-left: 70vw;
+			margin-top: 50vh;
+		}
+		#squirrel {
+			width:80vw;
+			height:75vh;
+		}
+
+		#waterglass {
+			width:100vw;
+			height:100vh;
+			display: block;
+			margin: auto;
+			transform: scale(0.4);
+		}
+		
+		#plant {
+			width: 100vw;
+			height: 100vh;
+			transform: scale(2);
+		}
+		
+		.CO2-molecule, .water-molecule, .oxygen-molecule {
+			z-index: 1;
+			width:7vw;
+			height:7vh;
+			position: absolute;
+		}
+		
+		#sun {
+			width: 20vw;
+			height: 20vh;
+			position: absolute;
+		}
+		#ending {
+			width:100vw;
+			height:100vh;
+		}
+    </style>
+		
+		
+		
+		
+		
+    <script>
+		
+		const sleep = m => new Promise(r => setTimeout(r, m))
+		
+		let glucose = document.getElementById("glucose")
+		let mango = document.getElementById("mango")
+		let squirrel = document.getElementById("squirrel")
+		let waterglass = document.getElementById("waterglass")
+		let plant = document.getElementById("plant")
+		let sun = document.getElementById("sun")
+		let energy = document.getElementById("energy")
+		
+		let water_molecules = []
+		for (let i=1;i<7;i++) {
+			let element = document.getElementById("water-molecule" + i)
+			water_molecules.push(element)
+			element.className = "water-molecule"
+			element.style.position = "absolute"
+			element.style.marginLeft = (55 - 10*(i%3)) + "vw"
+			element.style.marginTop = (55 - 10*(i%2)) + "vh"
+			element.hidden = "hidden"
+		}
+
+		
+		
+		let oxygen_molecules = []
+		for (let i=0;i<6;i++) {
+			let element = document.getElementById("oxygen-molecule" + i)
+			oxygen_molecules.push(element)
+			element.className = "oxygen-molecule"
+			element.style.position = "absolute"
+			element.style.marginLeft = (90 - 45*(i%3)) + "vw"
+			element.style.marginTop = (90 - 90*(i%2)) + "vh"
+			element.hidden = "hidden"
+		}			
+		
+		
+		
+		
+		let CO2_molecules = []
+		for (let i=0;i<6;i++) {
+			let element = document.getElementById("CO2-molecule" + i)
+			CO2_molecules.push(element)
+			element.className = "CO2-molecule"
+			element.style.position = "absolute"
+			element.style.marginLeft = (38 - 6*(i%3)) + "vw"
+			element.style.marginTop = (33 - 6*(i%2)) + "vh"
+			element.hidden = "hidden"
+		}		
+		
+		
+		
+		
+		glucose.hidden = "hidden"
+		squirrel.hidden = "hidden"
+		mango.hidden = "hidden"
+		plant.hidden = "hidden"
+		sun.hidden = "hidden"
+		energy.hidden = "hidden"
+		ending.hidden = "hidden"
+		
+		;(async function() {		
+
+			let div = document.createElement("div")
+			div.style.position = "absolute"
+			div.style.width = "100vw"
+			div.style.height = "100vh"
+			div.style.marginTop = 0
+			div.style.marginLeft = 0
+			div.style.zIndex = 2
+			div.style.backgroundColor = "white"
+			div.style.textAlign = "center"
+			
+			header = document.createElement("h1")
+			header.innerHTML = "Animation of Cellular Respiration and Photosynthesis"
+			div.appendChild(header)
+			
+			let audio = document.createElement("button")
+			audio.innerHTML = "Play with audio"			
+			
+			let noaudio = document.createElement("button")
+			noaudio.innerHTML = "Don't play audio"
+			
+			div.appendChild(audio)
+			div.appendChild(noaudio)
+			
+			copyright = document.createElement("p")
+			copyright.innerHTML = "Copyright (c) 2019 Tucker Willenborg. All Rights Reserved."
+			div.appendChild(copyright)
+			
+			document.body.insertBefore(div, document.body.firstChild)
+			
+			useAudio = await new Promise(function(resolve, reject) {
+				audio.addEventListener("click", function() {resolve(1)})
+				noaudio.addEventListener("click", function() {resolve(0)})
+			})
+			
+			div.remove()
+	
+
+			function say(text) {
+				if (!useAudio) {return}
+				return new Promise(function(resolve, reject) {
+					let utterance = new SpeechSynthesisUtterance(text)
+					utterance.rate = 1.1
+					utterance.onend = resolve
+					window.speechSynthesis.speak(utterance)
+				})
+			}			
+			
+			window.say = say
+			
+			//if (useAudio) {
+			//	say("Hi. I'm Belinda, and will be teaching you Tucker's lesson on photosynthesis and cellular respiration")
+			//	await sleep(6100)
+			//}
+			
+			let speaking;
+			speaking = say("Photosynthesis begins in plants when water is absorbed through the roots into the leaves")
+			await sleep(700)
+			
+			waterglass.style.transformOrigin = "bottom"
+			for (let i=0;i<60;i++) {
+				//waterglass.style.width = 100 + (i*10) + "vw"
+				//waterglass.style.height = 100 + (i*10) + "vh"
+				waterglass.style.transform = "scale(" + (0.5 + (0.03*i)) + ")"
+				await sleep(25);
+			}
+			
+			for (let i=0;i<22;i++) {
+				for (let c=0;c<water_molecules.length;c++) {
+					let item = water_molecules[c]
+					item.hidden = ""
+					item.style.transform = "scale(" + (0.5 + (0.05*i)) + ")"
+				}
+				
+				waterglass.style.opacity = 1-(i*0.05)
+				await sleep(65)
+			}
+			
+			waterglass.style.display = "none"
+			waterglass.style.opacity = 1
+			
+			
+			plant.style.opacity = 0
+			plant.hidden = ""
+			for (let i=0;i<22;i++) {
+				plant.style.opacity = i*0.05
+				for (let c=0;c<water_molecules.length;c++) {
+					let item = water_molecules[c]
+					let marginLeft = parseFloat(item.style.marginLeft)
+					let marginTop = parseFloat(item.style.marginTop)
+					item.style.transform = "scale(" + (1.55-(0.05 * i)) + ")"
+					item.style.marginLeft = (marginLeft + (27 - marginLeft)/20) + "vw"
+					item.style.marginTop = (marginTop + (40 - marginTop)/20) + "vh"
+				}
+				await sleep(75)
+			}
+				
+			speaking = say("The water is joined in the cholorplast by carbon dioxide, taken in through tiny pores on plants leaves called stomata")
+			
+			await sleep(500)
+			
+			for (let i=0;i<41;i++) {
+				for (let c=0;c<CO2_molecules.length;c++) {
+					let item = CO2_molecules[c]
+					item.className = "CO2-molecule"
+					item.style.opacity = i*0.025
+					item.hidden = ""
+				}
+				await sleep(50)
+			}
+			
+			//I was using await speaking so that nothing got ahead of the other, but chrome wasn't firing utterance.onend
+			await sleep(2500)
+			
+			speaking = say("With sunlight, 6 water molecules and 6 carbon dioxide molecules combine to form 1 molecule of glucose and 6 molecules of oxygen")
+			
+			for (let i=0;i<21;i++) {
+				sun.style.opacity = i*0.05
+				sun.hidden = ""
+				await sleep(70)
+			}
+			
+			await sleep(1700)
+			
+			
+			sun.style.opacity = 0 //Hide the sun
+			plant.style.opacity = 0
+			for (let i=0;i<water_molecules.length;i++) {
+				water_molecules[i].style.opacity = 0
+			}
+			for (let i=0;i<CO2_molecules.length;i++) {
+				CO2_molecules[i].style.opacity = 0
+			}
+			
+			
+			
+			document.body.style.backgroundColor = "yellow"
+			await sleep(400)
+			document.body.style.backgroundColor = "black"
+			await sleep(400)
+			document.body.style.backgroundColor = "yellow"
+			await sleep(400)
+			document.body.style.backgroundColor = "white"
+			
+			await sleep(400)
+
+			glucose.style.opacity = 0
+			glucose.hidden = ""
+			
+			for (let i=0;i<41;i++) {
+				glucose.style.opacity = 0.025*i
+				await sleep(50)
+			}
+			
+			for (let i=0;i<41;i++) {
+				for (let c=0;c<oxygen_molecules.length;c++) {
+					let item = oxygen_molecules[c]
+					item.style.opacity = i*0.025
+					item.hidden = ""
+				}				
+				await sleep(50)
+			}
+			
+			
+			await sleep(1800)
+			
+			speaking = say("The plant releases the oxygen into the atmosphere")
+			for (let i=0;i<41;i++) {
+				for (let c=0;c<oxygen_molecules.length;c++) {
+					oxygen_molecules[c].style.opacity = 1-(i*0.025)
+				}
+				await sleep(50)
+			}
+			
+			speaking = say("And stores the glucose, often in fruits")
+			for (let i=0;i<41;i++) {
+				glucose.style.opacity = 1-(i*0.025)
+				mango.style.opacity = i*0.025
+				mango.hidden=""
+				await sleep(50)
+			}
+			
+			await sleep(500)
+			speaking = say("In order to use the glucose, cellular respiration takes place.")
+			
+			for (let i=0;i<41;i++) {
+				squirrel.style.opacity = i*0.025
+				squirrel.hidden = ""
+				await sleep(50)
+			}
+			
+			speaking = say("The animal or plant first takes in oxygen, which joins glucose in the mitochondria")
+			
+			for (let i=0;i<51;i++) {
+				for (let c=0;c<oxygen_molecules.length;c++) {
+					item = oxygen_molecules[c]
+					item.style.opacity = i*0.02
+					let marginLeft = parseFloat(item.style.marginLeft)
+					let marginTop = parseFloat(item.style.marginTop)
+					item.style.marginLeft = (marginLeft + (35 - marginLeft)/25) + "vw"
+					item.style.marginTop = (marginTop + (40 - marginTop)/22) + "vh"
+				}
+				await sleep(50)
+			}
+			
+			
+			glucose.style.width = "20vw"
+			glucose.style.height = "20vh"
+			glucose.style.marginLeft = "12vw"
+			glucose.style.marginTop = "32vh"
+			glucose.style.position = "absolute"
+			document.body.insertBefore(glucose, document.body.firstChild)
+			for (let i=0;i<41;i++) {
+				glucose.style.opacity = 0.025*i
+				mango.style.opacity = 1-(0.025*i)
+			}
+			
+			
+			speaking = say("The oxygen and glucose combine to produce carbon dioxide and water, the inputs of photosynthesis, in addition to Adenosine Triphosphate, the usable form of energy.")
+			
+			for (let i=0;i<41;i++) {
+				for (let c=0;c<oxygen_molecules.length;c++) {
+					item = oxygen_molecules[c]
+					item.style.opacity = i*0.02
+					let marginLeft = parseFloat(item.style.marginLeft)
+					let marginTop = parseFloat(item.style.marginTop)
+					item.style.marginLeft = (marginLeft + (35 - marginLeft)/40) + "vw"
+					item.style.marginTop = (marginTop + (40 - marginTop)/40) + "vh"
+				}
+				
+				//Move the glucose molecule
+				marginLeft = parseFloat(glucose.style.marginLeft)
+				marginTop = parseFloat(glucose.style.marginTop)
+				glucose.style.marginLeft = (marginLeft + (30 - marginLeft)/10) + "vw"
+				glucose.style.marginTop = (marginTop + (34 - marginTop)/10) + "vh"				
+				
+				await sleep(50)			
+			}
+			
+			
+			await sleep(500)
+			glucose.style.opacity = 0
+			for (let c=0;c<oxygen_molecules.length;c++) {
+				item = oxygen_molecules[c]
+				item.style.opacity = 0
+			}
+			
+			document.body.style.backgroundColor = "yellow"
+			await sleep(400)
+			document.body.style.backgroundColor = "black"
+			await sleep(400)
+			document.body.style.backgroundColor = "yellow"
+			await sleep(400)
+			document.body.style.backgroundColor = "white"
+			await sleep(400)
+			
+			
+			squirrel.style.position = "absolute"
+			squirrel.style.marginLeft = 0
+			squirrel.style.marginTop = 0
+			
+			for (let c=0;c<41;c++) {
+				for (let i=0;i<water_molecules.length;i++) {
+					water_molecules[i].style.opacity = c*0.025
+				}
+				for (let i=0;i<CO2_molecules.length;i++) {
+					CO2_molecules[i].style.opacity = c*0.025
+				}				
+				await sleep(50)
+			}
+			
+						
+			for (let i=0;i<41;i++) {
+				squirrel.style.opacity = 1-(0.025*i)
+				await sleep(40)
+			}
+			
+			energy.style.width = "100vw"
+			energy.style.height = "100vh"
+			for (let c=0;c<41;c++) {
+				for (let i=0;i<water_molecules.length;i++) {
+					water_molecules[i].style.opacity = 1-(c*0.025)
+				}
+				for (let i=0;i<CO2_molecules.length;i++) {
+					CO2_molecules[i].style.opacity = 1-(c*0.025)
+				}				
+				energy.style.opacity = c*0.025
+				energy.hidden = ""
+				await sleep(40)
+			}	
+			
+			
+			for (let i=0;i<21;i++) {
+				energy.style.opacity = 1-(i*0.05)
+				await sleep(50)
+			}
+			
+			ending.hidden = ""
+			speaking = say("The processes of photosynthesis and cellular respiration simply repeat, over and over again, converting sunlight into usable energy.")
+
+				
+
+			
+		}())
+		
+		
+    </script>
+	</body>
+</html>
